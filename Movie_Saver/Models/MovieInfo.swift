@@ -11,7 +11,7 @@ struct MovieInfo {
     var youtubeLink: URL
     var description: String
     var imageMovie: UIImage
-    
+
     init() {
         self.name = ""
         self.rating = ""

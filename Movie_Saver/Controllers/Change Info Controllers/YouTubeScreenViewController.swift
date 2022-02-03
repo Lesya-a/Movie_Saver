@@ -5,33 +5,42 @@ final class YouTubeScreenViewController: UIViewController {
     // MARK: Public
     weak var delegate: TransferDataBetweenVCDelegate?
     // MARK: Private
-    private let label: UILabel = UILabel()
-    private let textField: UITextField = UITextField()
-    private let underlineView: UIView = UIView()
-    private let button: UIButton = UIButton()
-    
+    private let label = UILabel()
+    private let textField = UITextField()
+    private let underlineView = UIView()
+    private let button = UIButton()
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configNavigationBar()
         addSubviews()
         addConstraints()
         setupUI()
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configNavigationBar()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        textField.becomeFirstResponder()
+    }
+
     // MARK: - Setups
     private func configNavigationBar() {
-        self.navigationItem.hidesBackButton = false
+        navigationItem.hidesBackButton = false
         navigationController?.navigationBar.prefersLargeTitles = false
     }
-    
+
     private func addSubviews() {
         view.addSubview(label)
         view.addSubview(textField)
         view.addSubview(underlineView)
         view.addSubview(button)
     }
-    
+
     // MARK: SetupUI
     private func setupUI() {
         view.backgroundColor = .white
@@ -40,27 +49,31 @@ final class YouTubeScreenViewController: UIViewController {
         underlineViewSetup()
         buttonSetup()
     }
-        
+
     private func labelSetup() {
         label.text = "YouTube Link"
         label.textAlignment = .center
-        label.font = UIFont(name: "manropeMedium", size: 24)
+        label.font = .manrope(ofSize: 24, weight: .medium)
     }
+
     private func textFieldSetup() {
         textField.placeholder = "URL"
         textField.backgroundColor = .white
         textField.keyboardType = .URL
         textField.autocapitalizationType = .none
     }
+
     private func underlineViewSetup() {
         underlineView.backgroundColor = .lightGray
     }
+
     private func buttonSetup() {
         button.setTitle("Save", for: .normal)
+        button.titleLabel?.font = .manrope(ofSize: 18, weight: .medium)
         button.setTitleColor(.systemBlue, for: .normal)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
-    
+
     // MARK: Constrains
     private func addConstraints() {
         labelConstraints()
@@ -68,12 +81,14 @@ final class YouTubeScreenViewController: UIViewController {
         underlineViewConstraints()
         buttonConstraints()
     }
+
     private func labelConstraints() {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         label.topAnchor.constraint(equalTo: view.topAnchor, constant: 124).isActive = true
-        label.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.32).isActive = true
+        label.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8).isActive = true
     }
+
     private func textFieldConstraints() {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
@@ -81,6 +96,7 @@ final class YouTubeScreenViewController: UIViewController {
         textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25).isActive = true
         textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25).isActive = true
     }
+
     private func underlineViewConstraints() {
         underlineView.translatesAutoresizingMaskIntoConstraints = false
         underlineView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25).isActive = true
@@ -88,31 +104,28 @@ final class YouTubeScreenViewController: UIViewController {
         underlineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         underlineView.topAnchor.constraint(equalTo: textField.bottomAnchor).isActive = true
     }
+
     private func buttonConstraints() {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.centerXAnchor.constraint(equalTo: label.centerXAnchor).isActive = true
         button.topAnchor.constraint(equalTo: underlineView.bottomAnchor, constant: 42).isActive = true
     }
-    
+
     // MARK: - Helpers
     @objc private func buttonTapped() {
-        if textField.text != "" && textField.text?.isValidUrl == true {
-            let url = URL(string: textField.text!)
-            delegate?.transferMovieYouTube(url!)
+        if let url = URL(string: textField.text!) {
+            delegate?.transferMovieYouTube(url)
             navigationController?.popViewController(animated: true)
         } else {
             showAllert("Add url movie!")
             textField.text = ""
         }
     }
+
     private func showAllert(_ msg: String) {
         let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-            //self.textField.setUnderLine(.red)
         }))
         present(alert, animated: true, completion: nil)
     }
 }
-
-
-

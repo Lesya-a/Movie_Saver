@@ -12,60 +12,74 @@ final class AddNewFilmScreenViewController: UIViewController {
     // MARK: Public
     weak var delegate: TransferMovieBetweenVCDelegate?
     // MARK: Private
-    
     private var pickedImage: UIImage?
-    private var movieInfo: MovieInfo = MovieInfo()
-    private let imgViewContainer: UIView = UIView()
-    private let imgView: UIImageView = UIImageView(image: #imageLiteral(resourceName: "imgImage.png"))
-    
-    private let verticalStackView: UIStackView = UIStackView()
-    private let gorizontalStackView1: UIStackView = UIStackView()
-    private let ch1: UIView = UIView()
-    private let nameLabel: UILabel = UILabel()
-    private let dash1: UILabel = UILabel()
-    private let nameChangeButton: UIButton = UIButton()
-    
-    private let ch2: UIView = UIView()
-    private let raitingLabel: UILabel = UILabel()
-    private let dash2: UILabel = UILabel()
-    private let raitingChangeButton: UIButton = UIButton()
-    
-    private let gorizontalStackView2: UIStackView = UIStackView()
-    private let ch3: UIView = UIView()
-    private let releaseDateLabel: UILabel = UILabel()
-    private let dash3: UILabel = UILabel()
-    private let releaseDateChangeButton: UIButton = UIButton()
-    
-    private let ch4: UIView = UIView()
-    private let linkLabel: UILabel = UILabel()
-    private let dash4: UILabel = UILabel()
-    private let linkButton: UIButton = UIButton()
-    
-    private let descriptionContainer: UIView = UIView()
-    private let descriptionLabel: UILabel = UILabel()
-    private let descriptionTextView: UITextView = UITextView()
-    
-    
+    private var movieInfo = MovieInfo()
+    private let imgViewContainer = UIView()
+    private let imgView = UIImageView(image: #imageLiteral(resourceName: "imgImage.png"))
+
+    private let verticalStackView = UIStackView()
+    private let gorizontalStackView1 = UIStackView()
+    private let ch1 = UIView()
+    private let nameLabel = UILabel()
+    private let dash1 = UILabel()
+    private let nameChangeButton = UIButton()
+
+    private let ch2 = UIView()
+    private let raitingLabel = UILabel()
+    private let dash2 = UILabel()
+    private let raitingChangeButton = UIButton()
+
+    private let gorizontalStackView2 = UIStackView()
+    private let ch3 = UIView()
+    private let releaseDateLabel = UILabel()
+    private let dash3 = UILabel()
+    private let releaseDateChangeButton = UIButton()
+
+    private let ch4 = UIView()
+    private let linkLabel = UILabel()
+    private let dash4 = UILabel()
+    private let linkButton = UIButton()
+
+    private let descriptionContainer = UIView()
+    private let descriptionLabel = UILabel()
+    private let descriptionTextView = UITextView()
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configNavigationBar()
         addSubviews()
         setupUI()
         addConstraints()
         addStackViews()
         tappedImage()
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configNavigationBar()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        imgView.layer.cornerRadius = imgView.frame.size.width / 2
+        imgView.clipsToBounds = true
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+
     // MARK: - Setups
     private func configNavigationBar() {
-        self.title = "Add new"
+        title = "Add new"
         navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.hidesBackButton = true
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonTapped))
+        navigationItem.hidesBackButton = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .save, target: self,
+            action: #selector(saveButtonTapped)
+        )
     }
-    
+
     private func addSubviews() {
         view.addSubview(imgViewContainer)
         view.addSubview(imgView)
@@ -92,138 +106,214 @@ final class AddNewFilmScreenViewController: UIViewController {
         view.addSubview(descriptionLabel)
         view.addSubview(descriptionTextView)
     }
-    
+
     private func setupUI() {
+        viewSetup()
+        imgViewContainerSetup()
+        verticalStackViewSetup()
+        gorizontalStackView1Setup()
+        nameLabelSetup()
+        dash1Setup()
+        nameChangeButtonSetup()
+        raitingLabelSetup()
+        dash2Setup()
+        raitingChangeButtonSetup()
+        gorizontalStackView2Setup()
+        releaseDateLabelSetup()
+        dash3Setup()
+        releaseDateChangeButtonSetup()
+        linkLabelSetup()
+        dash4Setup()
+        linkButtonSetup()
+        descriptionContainerSetup()
+        descriptionLabelSetup()
+        descriptionTextViewSetup()
+    }
+
+    private func viewSetup() {
         view.backgroundColor = .white
-        // imgViewContainer
+    }
+
+    private func imgViewContainerSetup() {
         imgViewContainer.backgroundColor = .white
-        // imgView
-        
-        // verticalStackView
+    }
+
+    private func verticalStackViewSetup() {
         verticalStackView.backgroundColor = .white
         verticalStackView.axis = .vertical
         verticalStackView.distribution = .fillEqually
         verticalStackView.spacing = 10
-        
-        // gorizontalStackView1
+    }
+
+    private func gorizontalStackView1Setup() {
         gorizontalStackView1.backgroundColor = .white
         gorizontalStackView1.axis = .horizontal
         gorizontalStackView1.distribution = .fillEqually
         gorizontalStackView1.spacing = 10
-        // ch1
-        // nameLabel
+    }
+
+    private func nameLabelSetup() {
         nameLabel.text = "Name"
         nameLabel.textAlignment = .center
-        // dash1
+        nameLabel.font = .manrope(ofSize: 18, weight: .medium)
+    }
+
+    private func dash1Setup() {
         dash1.text = "-"
-        // nameChangeButton
+        dash1.textAlignment = .center
+        dash1.font = .manrope(ofSize: 18, weight: .medium)
+    }
+
+    private func nameChangeButtonSetup() {
         nameChangeButton.setTitle("Change", for: .normal)
+        nameChangeButton.titleLabel?.font = .manrope(ofSize: 18, weight: .medium)
         nameChangeButton.setTitleColor(.systemBlue, for: .normal)
         nameChangeButton.addTarget(self, action: #selector(nameChangeButtonTapped), for: .touchUpInside)
-        
-        // ch2
-        // raitingLabel
+    }
+
+    private func raitingLabelSetup() {
         raitingLabel.text = "Your Rating"
         raitingLabel.textAlignment = .center
-        // dash2
+        raitingLabel.font = .manrope(ofSize: 18, weight: .medium)
+    }
+
+    private func dash2Setup() {
         dash2.text = "-"
-        // raitingChangeButton
+        dash2.textAlignment = .center
+        dash2.font = .manrope(ofSize: 18, weight: .medium)
+    }
+
+    private func raitingChangeButtonSetup() {
         raitingChangeButton.setTitle("Change", for: .normal)
+        raitingChangeButton.titleLabel?.font = .manrope(ofSize: 18, weight: .medium)
         raitingChangeButton.setTitleColor(.systemBlue, for: .normal)
         raitingChangeButton.addTarget(self, action: #selector(raitingChangeButtonTapped), for: .touchUpInside)
-        
-        // gorizontalStackView2
+    }
+
+    private func gorizontalStackView2Setup() {
         gorizontalStackView2.backgroundColor = .white
         gorizontalStackView2.axis = .horizontal
         gorizontalStackView2.distribution = .fillEqually
         gorizontalStackView2.spacing = 10
-        // ch3
-        // releaseDateLabel
+    }
+
+    private func releaseDateLabelSetup() {
         releaseDateLabel.text = "Release Date"
         releaseDateLabel.textAlignment = .center
-        // dash3
+        releaseDateLabel.font = .manrope(ofSize: 18, weight: .medium)
+    }
+
+    private func dash3Setup() {
         dash3.text = "-"
-        // releaseDateChangeButton
+        dash3.textAlignment = .center
+        dash3.font = .manrope(ofSize: 18, weight: .medium)
+    }
+
+    private func releaseDateChangeButtonSetup() {
         releaseDateChangeButton.setTitle("Change", for: .normal)
+        releaseDateChangeButton.titleLabel?.font = .manrope(ofSize: 18, weight: .medium)
         releaseDateChangeButton.setTitleColor(.systemBlue, for: .normal)
         releaseDateChangeButton.addTarget(self, action: #selector(releaseDateChangeButtonTapped), for: .touchUpInside)
-        
-        // ch4
-        // linkLabel
+    }
+
+    private func linkLabelSetup() {
         linkLabel.text = "YouTube Link"
         linkLabel.textAlignment = .center
-        // dash4
+        linkLabel.font = .manrope(ofSize: 18, weight: .medium)
+    }
+
+    private func dash4Setup() {
         dash4.text = "-"
-        // linkButton
+        dash4.textAlignment = .center
+        dash4.font = .manrope(ofSize: 18, weight: .medium)
+    }
+
+    private func linkButtonSetup() {
         linkButton.setTitle("Change", for: .normal)
+        linkButton.titleLabel?.font = .manrope(ofSize: 18, weight: .medium)
         linkButton.setTitleColor(.systemBlue, for: .normal)
         linkButton.addTarget(self, action: #selector(linkButtonTapped), for: .touchUpInside)
-        
-        // descriptionContainer
-        descriptionContainer.backgroundColor = .white
-        // descriptionLabel
-        descriptionLabel.text = "Description"
-        descriptionLabel.font = UIFont(name: "manropeMedium", size: 18)
-        descriptionLabel.textAlignment = .center
-        // descriptionTextView
-        descriptionTextView.text = ""
-        descriptionTextView.font = UIFont(name: "manropeMedium", size: 14)
     }
-    
+
+    private func descriptionContainerSetup() {
+        descriptionContainer.backgroundColor = .white
+    }
+
+    private func descriptionLabelSetup() {
+        descriptionLabel.text = "Description"
+        descriptionLabel.font = .manrope(ofSize: 18, weight: .medium)
+        descriptionLabel.textAlignment = .center
+    }
+
+    private func descriptionTextViewSetup() {
+        descriptionTextView.text = ""
+        descriptionTextView.font = .manrope(ofSize: 14, weight: .regular)
+    }
+
     private func tappedImage() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(imageTapped(tapGestureRecognizer:))
+        )
         imgView.isUserInteractionEnabled = true
         imgView.addGestureRecognizer(tapGestureRecognizer)
     }
-    
+
     @objc private func nameChangeButtonTapped() {
-     let nameScreenViewController = NameScreenViewController()
-            nameScreenViewController.delegate = self
-            navigationController?.pushViewController(nameScreenViewController, animated: true)
+        let nameScreenViewController = NameScreenViewController()
+        nameScreenViewController.delegate = self
+        navigationController?.pushViewController(nameScreenViewController, animated: true)
     }
-    
+
     @objc private func raitingChangeButtonTapped() {
         let yourRatingPickerScreenViewController = YourRatingPickerScreenViewController()
-            navigationController?.pushViewController(yourRatingPickerScreenViewController, animated: true)
-            yourRatingPickerScreenViewController.delegate = self
+        navigationController?.pushViewController(yourRatingPickerScreenViewController, animated: true)
+        yourRatingPickerScreenViewController.delegate = self
     }
-    
+
     @objc private func releaseDateChangeButtonTapped() {
         let releaseDatePickerScreenViewController = ReleaseDatePickerScreenViewController()
-            navigationController?.pushViewController(releaseDatePickerScreenViewController, animated: true)
-            releaseDatePickerScreenViewController.delegate = self
+        navigationController?.pushViewController(releaseDatePickerScreenViewController, animated: true)
+        releaseDatePickerScreenViewController.delegate = self
     }
-    
+
     @objc private func linkButtonTapped() {
         let youTubeScreenViewController = YouTubeScreenViewController()
-            navigationController?.pushViewController(youTubeScreenViewController, animated: true)
-            youTubeScreenViewController.delegate = self
+        navigationController?.pushViewController(youTubeScreenViewController, animated: true)
+        youTubeScreenViewController.delegate = self
     }
-    
+
     @objc private func saveButtonTapped() {
-        if nameLabel.text != "-" && raitingLabel.text != "-" && releaseDateLabel.text != "-" && linkLabel.text != "-" && descriptionTextView.text != "-" && pickedImage != nil {
-            movieInfo.name = nameLabel.text!
-            movieInfo.rating = raitingLabel.text!
-            movieInfo.releaseDate = releaseDateLabel.text!
+        let checkAllInformation = (
+            dash1.text != "-" &&
+                dash2.text != "-" &&
+                dash3.text != "-" &&
+                dash4.text != "-" &&
+                descriptionTextView.text != "" &&
+                pickedImage != nil
+        )
+        if checkAllInformation == true {
+            movieInfo.name = dash1.text!
+            movieInfo.rating = dash2.text!
+            movieInfo.releaseDate = dash3.text!
             movieInfo.description = descriptionTextView.text!
             movieInfo.imageMovie = imgView.image!
-            delegate?.transferMovieInfo(movieInfo)
-            if let url = URL(string: linkLabel.text!) {
+            if let url = URL(string: dash4.text!) {
                 movieInfo.youtubeLink = url
             }
+            delegate?.transferMovieInfo(movieInfo)
             navigationController?.popViewController(animated: true)
         } else {
             showAllert("Fill in all fields")
         }
     }
-    
+
     private func showAllert(_ msg: String) {
         let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-    
-    
+
     private func addStackViews() {
         verticalStackView.addArrangedSubview(gorizontalStackView1)
         verticalStackView.addArrangedSubview(gorizontalStackView2)
@@ -232,127 +322,175 @@ final class AddNewFilmScreenViewController: UIViewController {
         gorizontalStackView2.addArrangedSubview(ch3)
         gorizontalStackView2.addArrangedSubview(ch4)
     }
-    
+
     private func addConstraints() {
-        // translatesAutoresizingMaskIntoConstraints
+        imgViewContainerConstraints()
+        imgViewConstraints()
+        verticalStackViewConstraints()
+        nameLabelConstraints()
+        dash1Constraints()
+        nameChangeButtonConstraints()
+        raitingLabelConstraints()
+        dash2Constraints()
+        raitingChangeButtonConstraints()
+        releaseDateLabelConstraints()
+        dash3Constraints()
+        releaseDateChangeButtonConstraints()
+        linkLabelConstraints()
+        dash4Constraints()
+        linkButtonConstraints()
+        descriptionContainerConstraints()
+        descriptionLabelConstraints()
+        descriptionTextViewConstraints()
+        otherTranslatesAutoresizingMaskIntoConstraints()
+    }
+
+    private func imgViewContainerConstraints() {
         imgViewContainer.translatesAutoresizingMaskIntoConstraints = false
-        imgView.translatesAutoresizingMaskIntoConstraints = false
-        verticalStackView.translatesAutoresizingMaskIntoConstraints = false
-        gorizontalStackView1.translatesAutoresizingMaskIntoConstraints = false
-        ch1.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        dash1.translatesAutoresizingMaskIntoConstraints = false
-        nameChangeButton.translatesAutoresizingMaskIntoConstraints = false
-        ch2.translatesAutoresizingMaskIntoConstraints = false
-        raitingLabel.translatesAutoresizingMaskIntoConstraints = false
-        dash2.translatesAutoresizingMaskIntoConstraints = false
-        raitingChangeButton.translatesAutoresizingMaskIntoConstraints = false
-        gorizontalStackView2.translatesAutoresizingMaskIntoConstraints = false
-        ch3.translatesAutoresizingMaskIntoConstraints = false
-        releaseDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dash3.translatesAutoresizingMaskIntoConstraints = false
-        releaseDateChangeButton.translatesAutoresizingMaskIntoConstraints = false
-        ch4.translatesAutoresizingMaskIntoConstraints = false
-        linkLabel.translatesAutoresizingMaskIntoConstraints = false
-        dash4.translatesAutoresizingMaskIntoConstraints = false
-        linkButton.translatesAutoresizingMaskIntoConstraints = false
-        descriptionContainer.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // imgViewContainer
         imgViewContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 167).isActive = true
         imgViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         imgViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         imgViewContainer.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        
-        // imgView
+    }
+
+    private func imgViewConstraints() {
+        imgView.translatesAutoresizingMaskIntoConstraints = false
         imgView.centerXAnchor.constraint(equalTo: imgViewContainer.centerXAnchor).isActive = true
         imgView.centerYAnchor.constraint(equalTo: imgViewContainer.centerYAnchor).isActive = true
         imgView.heightAnchor.constraint(equalTo: imgViewContainer.heightAnchor).isActive = true
         imgView.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        
-        // verticalStackView
+    }
+
+    private func verticalStackViewConstraints() {
+        verticalStackView.translatesAutoresizingMaskIntoConstraints = false
         verticalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         verticalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         verticalStackView.topAnchor.constraint(equalTo: imgViewContainer.bottomAnchor, constant: 10).isActive = true
         verticalStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.33).isActive = true
-        
-        // gorizontalStackView1
-        // ch1
-        // nameLabel
+    }
+
+    private func nameLabelConstraints() {
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.centerXAnchor.constraint(equalTo: dash1.centerXAnchor).isActive = true
         nameLabel.leadingAnchor.constraint(equalTo: ch1.leadingAnchor, constant: 10).isActive = true
         nameLabel.trailingAnchor.constraint(equalTo: ch1.trailingAnchor, constant: -10).isActive = true
         nameLabel.bottomAnchor.constraint(equalTo: dash1.topAnchor, constant: -10).isActive = true
-        // dash1
+    }
+
+    private func dash1Constraints() {
+        dash1.translatesAutoresizingMaskIntoConstraints = false
         dash1.centerXAnchor.constraint(equalTo: ch1.centerXAnchor).isActive = true
         dash1.centerYAnchor.constraint(equalTo: ch1.centerYAnchor).isActive = true
-        // nameChangeButton
+        dash1.widthAnchor.constraint(equalTo: nameLabel.widthAnchor).isActive = true
+    }
+
+    private func nameChangeButtonConstraints() {
+        nameChangeButton.translatesAutoresizingMaskIntoConstraints = false
         nameChangeButton.topAnchor.constraint(equalTo: dash1.bottomAnchor, constant: 10).isActive = true
         nameChangeButton.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor).isActive = true
         nameChangeButton.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor).isActive = true
-        
-        // ch2
-        // raitingLabel
+    }
+
+    private func raitingLabelConstraints() {
+        raitingLabel.translatesAutoresizingMaskIntoConstraints = false
         raitingLabel.centerXAnchor.constraint(equalTo: dash2.centerXAnchor).isActive = true
         raitingLabel.leadingAnchor.constraint(equalTo: ch2.leadingAnchor, constant: 10).isActive = true
         raitingLabel.trailingAnchor.constraint(equalTo: ch2.trailingAnchor, constant: -10).isActive = true
         raitingLabel.bottomAnchor.constraint(equalTo: dash2.topAnchor, constant: -10).isActive = true
-        // dash2
+    }
+
+    private func dash2Constraints() {
+        dash2.translatesAutoresizingMaskIntoConstraints = false
         dash2.centerXAnchor.constraint(equalTo: ch2.centerXAnchor).isActive = true
         dash2.centerYAnchor.constraint(equalTo: ch2.centerYAnchor).isActive = true
-        // raitingChangeButton
+        dash2.widthAnchor.constraint(equalTo: raitingLabel.widthAnchor).isActive = true
+    }
+
+    private func raitingChangeButtonConstraints() {
+        raitingChangeButton.translatesAutoresizingMaskIntoConstraints = false
         raitingChangeButton.topAnchor.constraint(equalTo: dash2.bottomAnchor, constant: 10).isActive = true
         raitingChangeButton.leadingAnchor.constraint(equalTo: raitingLabel.leadingAnchor).isActive = true
         raitingChangeButton.trailingAnchor.constraint(equalTo: raitingLabel.trailingAnchor).isActive = true
-        
-        // gorizontalStackView2
-        // ch3
-        // releaseDateLabel
+    }
+
+    private func releaseDateLabelConstraints() {
+        releaseDateLabel.translatesAutoresizingMaskIntoConstraints = false
         releaseDateLabel.centerXAnchor.constraint(equalTo: dash3.centerXAnchor).isActive = true
         releaseDateLabel.leadingAnchor.constraint(equalTo: ch3.leadingAnchor, constant: 10).isActive = true
         releaseDateLabel.trailingAnchor.constraint(equalTo: ch3.trailingAnchor, constant: -10).isActive = true
         releaseDateLabel.bottomAnchor.constraint(equalTo: dash3.topAnchor, constant: -10).isActive = true
-        // dash3
+    }
+
+    private func dash3Constraints() {
+        dash3.translatesAutoresizingMaskIntoConstraints = false
         dash3.centerXAnchor.constraint(equalTo: ch3.centerXAnchor).isActive = true
         dash3.centerYAnchor.constraint(equalTo: ch3.centerYAnchor).isActive = true
-        // releaseDateChangeButton
+        dash3.widthAnchor.constraint(equalTo: releaseDateLabel.widthAnchor).isActive = true
+    }
+
+    private func releaseDateChangeButtonConstraints() {
+        releaseDateChangeButton.translatesAutoresizingMaskIntoConstraints = false
         releaseDateChangeButton.topAnchor.constraint(equalTo: dash3.bottomAnchor, constant: 10).isActive = true
         releaseDateChangeButton.leadingAnchor.constraint(equalTo: releaseDateLabel.leadingAnchor).isActive = true
         releaseDateChangeButton.trailingAnchor.constraint(equalTo: releaseDateLabel.trailingAnchor).isActive = true
-        
-        // ch4
-        // linkLabel
+    }
+
+    private func linkLabelConstraints() {
+        linkLabel.translatesAutoresizingMaskIntoConstraints = false
         linkLabel.centerXAnchor.constraint(equalTo: dash4.centerXAnchor).isActive = true
         linkLabel.leadingAnchor.constraint(equalTo: ch4.leadingAnchor, constant: 10).isActive = true
         linkLabel.trailingAnchor.constraint(equalTo: ch4.trailingAnchor, constant: -10).isActive = true
         linkLabel.bottomAnchor.constraint(equalTo: dash4.topAnchor, constant: -10).isActive = true
-        // dash4
+    }
+
+    private func dash4Constraints() {
+        dash4.translatesAutoresizingMaskIntoConstraints = false
         dash4.centerXAnchor.constraint(equalTo: ch4.centerXAnchor).isActive = true
         dash4.centerYAnchor.constraint(equalTo: ch4.centerYAnchor).isActive = true
-        // linkButton
+        dash4.widthAnchor.constraint(equalTo: linkLabel.widthAnchor).isActive = true
+    }
+
+    private func linkButtonConstraints() {
+        linkButton.translatesAutoresizingMaskIntoConstraints = false
         linkButton.topAnchor.constraint(equalTo: dash4.bottomAnchor, constant: 10).isActive = true
         linkButton.leadingAnchor.constraint(equalTo: linkLabel.leadingAnchor).isActive = true
         linkButton.trailingAnchor.constraint(equalTo: linkLabel.trailingAnchor).isActive = true
-        
-        // descriptionContainer
+    }
+
+    private func descriptionContainerConstraints() {
+        descriptionContainer.translatesAutoresizingMaskIntoConstraints = false
         descriptionContainer.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor).isActive = true
         descriptionContainer.leadingAnchor.constraint(equalTo: imgViewContainer.leadingAnchor).isActive = true
         descriptionContainer.trailingAnchor.constraint(equalTo: imgViewContainer.trailingAnchor).isActive = true
         descriptionContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -25).isActive = true
-        // descriptionLabel
+    }
+
+    private func descriptionLabelConstraints() {
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.centerXAnchor.constraint(equalTo: descriptionContainer.centerXAnchor).isActive = true
         descriptionLabel.topAnchor.constraint(equalTo: descriptionContainer.topAnchor, constant: 20).isActive = true
         descriptionLabel.widthAnchor.constraint(equalTo: imgViewContainer.widthAnchor).isActive = true
         descriptionLabel.heightAnchor.constraint(equalToConstant: 26).isActive = true
-        // descriptionTextView
+    }
+
+    private func descriptionTextViewConstraints() {
+        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
         descriptionTextView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor).isActive = true
         descriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32).isActive = true
         descriptionTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32).isActive = true
         descriptionTextView.bottomAnchor.constraint(equalTo: descriptionContainer.bottomAnchor).isActive = true
     }
+
+    private func otherTranslatesAutoresizingMaskIntoConstraints() {
+        gorizontalStackView1.translatesAutoresizingMaskIntoConstraints = false
+        ch1.translatesAutoresizingMaskIntoConstraints = false
+        ch2.translatesAutoresizingMaskIntoConstraints = false
+        gorizontalStackView2.translatesAutoresizingMaskIntoConstraints = false
+        ch3.translatesAutoresizingMaskIntoConstraints = false
+        ch4.translatesAutoresizingMaskIntoConstraints = false
+    }
 }
+
 // MARK: - Helpers
 
 extension AddNewFilmScreenViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
@@ -368,36 +506,38 @@ extension AddNewFilmScreenViewController: UIImagePickerControllerDelegate & UINa
         }))
         present(alert, animated: true, completion: nil)
     }
-    
+
     private func openCamera() {
-        if UIImagePickerController .isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self
             imagePicker.allowsEditing = true
             imagePicker.sourceType = UIImagePickerController.SourceType.camera
-            self.present(imagePicker, animated: true, completion: nil)
+            present(imagePicker, animated: true, completion: nil)
         } else {
-            let alert  = UIAlertController(title: "Warning", message: "You don't have camera", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Warning", message: "You don't have camera", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         }
     }
-    
+
     private func openGallary() {
-        if UIImagePickerController .isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary) {
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self
             imagePicker.allowsEditing = true
             imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
-            self.present(imagePicker, animated: true, completion: nil)
+            present(imagePicker, animated: true, completion: nil)
         } else {
-            let alert  = UIAlertController(title: "Warning", message: "You don't have camera", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Warning", message: "You don't have camera", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         }
     }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [
+        UIImagePickerController.InfoKey: Any
+    ]) {
         picker.dismiss(animated: true, completion: nil)
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imgView.image = image
@@ -414,17 +554,17 @@ extension AddNewFilmScreenViewController: TransferDataBetweenVCDelegate {
     func transferMovieName(_ name: String) {
         dash1.text = name
     }
-    
+
     func transferMovieRating(_ rating: String) {
         dash2.text = rating
     }
-    
+
     func transferMovieDate(_ date: Date) {
-        let dateformatter = DateFormatter() // in  private let        //dateformatter.dateFormat = "dd MMMM yyyy"
+        let dateformatter = DateFormatter()
         dateformatter.dateFormat = "yyyy"
         dash3.text = dateformatter.string(from: date)
     }
-    
+
     func transferMovieYouTube(_ url: URL) {
         dash4.text = url.absoluteString
     }

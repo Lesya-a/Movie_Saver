@@ -1,7 +1,7 @@
 import UIKit
 
 class CellListScreen: UITableViewController {
-        
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,6 +18,4 @@ class CellListScreen: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return 0
     }
-
-    
 }
